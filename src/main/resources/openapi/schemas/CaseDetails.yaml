@@ -33,5 +33,4 @@ properties:
 required:
 - defendants
 - urn
-- informant
 additionalProperties: false
