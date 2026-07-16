@@ -1,5 +1,4 @@
 type: object
-x-class-extra-annotation: "@lombok.AllArgsConstructor"
 properties:
   courtHearingLocation:
     type: string
@@ -17,3 +16,5 @@ properties:
     maxLength: 8
 required:
 - courtHearingLocation
+- dateOfHearing
+- timeOfHearing
