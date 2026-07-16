@@ -37,6 +37,8 @@ components:
       $ref: './schemas/Email.yaml'
     Gender:
       $ref: './schemas/Gender.yaml'
+    HearingDateRangeDetails:
+      $ref: './schemas/HearingDateRangeDetails.yaml'
     HearingDetails:
       $ref: './schemas/HearingDetails.yaml'
     Individual:

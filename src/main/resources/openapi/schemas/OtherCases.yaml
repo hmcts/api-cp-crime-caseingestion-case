@@ -1,4 +1,5 @@
 type: object
+x-class-extra-annotation: "@lombok.AllArgsConstructor"
 properties:
   prosecutionCases:
     type: array
@@ -14,8 +15,20 @@ properties:
     maxLength: 7
   hearingDetails:
     $ref: ./HearingDetails.yaml
+  hearingDateRangeDetails:
+    allOf:
+    - $ref: ./HearingDateRangeDetails.yaml
+    description: Court Hearing date range details for enforcement cases
+  relatedReferenceNumber:
+    type: string
+    description: GoB account number (Libra account reference) tied to the defendant. Required for enforcement cases.
+    maxLength: 13
 required:
 - prosecutionCases
 - prosecutingAuthority
-- hearingDetails
+oneOf:
+- required:
+  - hearingDetails
+- required:
+  - hearingDateRangeDetails
 additionalProperties: false

@@ -1,0 +1,19 @@
+type: object
+properties:
+  startDateRangeOfHearing:
+    allOf:
+    - $ref: ./Date.yaml
+    description: Start date of the hearing date range (YYYY-MM-DD)
+  endDateRangeOfHearing:
+    allOf:
+    - $ref: ./Date.yaml
+    description: End date of the hearing date range (YYYY-MM-DD)
+  courtHearingLocation:
+    type: string
+    description: The OUCODE of the courthouse (reference data)
+    minLength: 1
+    maxLength: 7
+required:
+- startDateRangeOfHearing
+- endDateRangeOfHearing
+- courtHearingLocation
