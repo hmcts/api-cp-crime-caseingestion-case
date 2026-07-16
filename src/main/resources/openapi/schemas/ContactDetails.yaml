@@ -1,0 +1,28 @@
+type: object
+description: Contact Details of the individual
+x-class-extra-annotation: "@lombok.AllArgsConstructor"
+properties:
+  workTelephoneNumber:
+    type: string
+    description: A work telephone number, including any exchange of location code,
+      at which a person or organisation can be contacted in the UK by telephonic means.
+    pattern: ^[0-9+\ \-]{10,}$
+  homeTelephoneNumber:
+    type: string
+    description: A home telephone number, including any exchange of location code,
+      at which a person or organisation can be contacted in the UK by telephonic means.
+    pattern: ^[0-9+\ \-]{10,}$
+  mobileTelephoneNumber:
+    type: string
+    description: A mobile number, including any exchange of location code, at which
+      a person or organisation can be contacted in the UK by telephonic means.
+    pattern: ^[0-9+\ \-]{10,}$
+  primaryEmail:
+    allOf:
+    - $ref: ./Email.yaml
+    description: The identification of the first e-mail address.
+  secondaryEmail:
+    allOf:
+    - $ref: ./Email.yaml
+    description: The identification of the second e-mail address.
+additionalProperties: false

@@ -1,0 +1,21 @@
+type: object
+properties:
+  prosecutionCases:
+    type: array
+    minItems: 1
+    items:
+      $ref: ./CaseDetails.yaml
+  prosecutingAuthority:
+    type: string
+    description: Identifies the Prosecuting Organisation responsible for initiating
+      the case
+    pattern: ^[a-zA-Z0-9-]*$
+    minLength: 7
+    maxLength: 7
+  hearingDetails:
+    $ref: ./HearingDetails.yaml
+required:
+- prosecutionCases
+- prosecutingAuthority
+- hearingDetails
+additionalProperties: false

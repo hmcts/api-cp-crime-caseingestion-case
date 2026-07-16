@@ -1,0 +1,8 @@
+type: integer
+description: Identifies the gender of the individual, 0 = Not Known, 1 = Male, 2 =
+  Female, 9 = Not Applicable
+enum:
+- 0
+- 1
+- 2
+- 9

@@ -1,0 +1,18 @@
+type: object
+description: Person details
+x-class-extra-annotation: "@lombok.AllArgsConstructor"
+properties:
+  organisation:
+    $ref: ./ParentGuardianOrganisation.yaml
+  individual:
+    $ref: ./ParentGuardianIndividual.yaml
+  address:
+    $ref: ./Address.yaml
+oneOf:
+- required:
+  - individual
+  - address
+- required:
+  - organisation
+  - address
+additionalProperties: false

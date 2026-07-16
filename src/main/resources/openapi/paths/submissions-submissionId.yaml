@@ -1,0 +1,266 @@
+get:
+  summary: Get Submission Operation
+  description: Retrieve an existing submission.
+  tags:
+    - Retrieve Submitted Info
+  parameters:
+    - in: path
+      name: submissionId
+      description: Obtained via the case submission operation response
+      schema:
+        type: string
+        format: uuid
+      required: true
+  responses:
+    '200':
+      description: OK. Response contains the current status of the submission
+      content:
+        application/vnd.hmcts.cjs.sjp.submission.v2+json:
+          schema:
+            type: object
+            x-class-extra-annotation: "@lombok.AllArgsConstructor"
+            properties:
+              id:
+                type: string
+                pattern: ^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$
+              status:
+                type: string
+                enum:
+                  - PENDING
+                  - FAILED
+                  - REJECTED
+                  - SUCCESS
+                  - SUCCESS_WITH_WARNINGS
+              warnings:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                      minLength: 1
+                    values:
+                      type: array
+                      items:
+                        type: object
+                        x-class-extra-annotation: "@lombok.AllArgsConstructor"
+                        properties:
+                          id:
+                            type: string
+                          key:
+                            type: string
+                            minLength: 1
+                          value:
+                            type: string
+                        required:
+                          - key
+                          - value
+                  required:
+                    - code
+                    - values
+                  additionalProperties: false
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                      minLength: 1
+                    values:
+                      type: array
+                      items:
+                        type: object
+                        x-class-extra-annotation: "@lombok.AllArgsConstructor"
+                        properties:
+                          id:
+                            type: string
+                          key:
+                            type: string
+                            minLength: 1
+                          value:
+                            type: string
+                        required:
+                          - key
+                          - value
+                  required:
+                    - code
+                    - values
+                  additionalProperties: false
+          example:
+            id: cedb215e-9297-4799-9a4d-5c608eaa4131
+            status: REJECTED
+            warnings: []
+            errors:
+              - code: DEFENDANT_DOB_IN_FUTURE
+                values:
+                  - key: dateOfBirth
+                    value: '2000-01-01'
+        application/vnd.hmcts.cjs.submission.v2+json:
+          schema:
+            type: object
+            x-class-extra-annotation: "@lombok.AllArgsConstructor"
+            properties:
+              id:
+                type: string
+                format: uuid
+              status:
+                type: string
+                enum:
+                  - PENDING
+                  - FAILED
+                  - REJECTED
+                  - SUCCESS
+                  - SUCCESS_WITH_WARNINGS
+              caseWarnings:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                      minLength: 1
+                    values:
+                      type: array
+                      items:
+                        type: object
+                        x-class-extra-annotation: "@lombok.AllArgsConstructor"
+                        properties:
+                          id:
+                            type: string
+                          key:
+                            type: string
+                            minLength: 1
+                          value:
+                            type: string
+                        required:
+                          - key
+                          - value
+                  required:
+                    - code
+                    - values
+                  additionalProperties: false
+              defendantWarnings:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    prosecutorDefendantReference:
+                      type: string
+                    problems:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                            minLength: 1
+                          values:
+                            type: array
+                            items:
+                              type: object
+                              x-class-extra-annotation: "@lombok.AllArgsConstructor"
+                              properties:
+                                id:
+                                  type: string
+                                key:
+                                  type: string
+                                  minLength: 1
+                                value:
+                                  type: string
+                              required:
+                                - key
+                                - value
+                        required:
+                          - code
+                          - values
+                        additionalProperties: false
+                  required:
+                    - prosecutorDefendantReference
+                    - problems
+                  additionalProperties: false
+              caseErrors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                      minLength: 1
+                    values:
+                      type: array
+                      items:
+                        type: object
+                        x-class-extra-annotation: "@lombok.AllArgsConstructor"
+                        properties:
+                          id:
+                            type: string
+                          key:
+                            type: string
+                            minLength: 1
+                          value:
+                            type: string
+                        required:
+                          - key
+                          - value
+                  required:
+                    - code
+                    - values
+                  additionalProperties: false
+              defendantErrors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    prosecutorDefendantReference:
+                      type: string
+                    problems:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          code:
+                            type: string
+                            minLength: 1
+                          values:
+                            type: array
+                            items:
+                              type: object
+                              x-class-extra-annotation: "@lombok.AllArgsConstructor"
+                              properties:
+                                id:
+                                  type: string
+                                key:
+                                  type: string
+                                  minLength: 1
+                                value:
+                                  type: string
+                              required:
+                                - key
+                                - value
+                        required:
+                          - code
+                          - values
+                        additionalProperties: false
+                  required:
+                    - prosecutorDefendantReference
+                    - problems
+                  additionalProperties: false
+          example:
+            id: d66b8daa-ae7b-4bf0-a46f-475272251d05
+            status: SUCCESS_WITH_WARNINGS
+            type: PROSECUTION
+            caseWarnings: []
+            caseErrors: []
+            defendantWarnings:
+              - problems:
+                  - code: OFFENCE_OUT_OF_TIME
+                    values:
+                      - key: daysOverdue
+                        value: '1'
+                prosecutorDefendantReference: DEFENDANTID1
+            defendantErrors: []
+            receivedAt: 2019-09-19T08:14:36.674Z[UTC]
+            completedAt: 2019-09-19T08:14:42.965Z[UTC]
+    '400':
+      description: Bad Request

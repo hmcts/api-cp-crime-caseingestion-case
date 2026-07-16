@@ -1,0 +1,34 @@
+type: object
+description: Defendant Details of the case
+x-class-extra-annotation: "@lombok.AllArgsConstructor"
+properties:
+  prosecutorDefendantId:
+    type: string
+    description: DefendantId provided by prosecutor.
+    pattern: ^[a-zA-Z0-9-]*$
+    maxLength: 36
+  asn:
+    type: string
+    description: Arrest / Summons number
+    maxLength: 20
+  pncIdentifier:
+    $ref: ./PncId.yaml
+  croNumber:
+    $ref: ./CroNumber.yaml
+  documentationLanguage:
+    $ref: ./Language.yaml
+  hearingLanguage:
+    $ref: ./Language.yaml
+  address:
+    $ref: ./Address.yaml
+  numPreviousConvictions:
+    type: integer
+    description: Number of previous conviction cited by prosecutor.
+  prosecutorCosts:
+    $ref: ./Money.yaml
+required:
+- prosecutorDefendantId
+- documentationLanguage
+- hearingLanguage
+- address
+additionalProperties: false

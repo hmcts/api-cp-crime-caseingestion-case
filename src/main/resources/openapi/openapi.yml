@@ -1,0 +1,88 @@
+openapi: 3.0.2
+servers:
+  - description: API Common Platform Case Interface
+    url: https://hmcts.github.io/api-cp-crime-caseingestion-case/
+info:
+  title: API Common Platform Case Interface
+  description: API providing information on Common Platform Case Interface (CPCI)
+  version: 0.0.0
+  contact:
+    email: no-reply@hmcts.com
+  license:
+    name: MIT
+    url: 'https://opensource.org/licenses/MIT'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      description: Valid Bearer Token
+      type: http
+      scheme: bearer
+  schemas:
+    Address:
+      $ref: './schemas/Address.yaml'
+    ContactDetails:
+      $ref: './schemas/ContactDetails.yaml'
+    CroNumber:
+      $ref: './schemas/CroNumber.yaml'
+    CustodyStatus:
+      $ref: './schemas/CustodyStatus.yaml'
+    Date:
+      $ref: './schemas/Date.yaml'
+    Defendant:
+      $ref: './schemas/Defendant.yaml'
+    DefendantDetails:
+      $ref: './schemas/DefendantDetails.yaml'
+    Email:
+      $ref: './schemas/Email.yaml'
+    Gender:
+      $ref: './schemas/Gender.yaml'
+    HearingDetails:
+      $ref: './schemas/HearingDetails.yaml'
+    Individual:
+      $ref: './schemas/Individual.yaml'
+    Language:
+      $ref: './schemas/Language.yaml'
+    Money:
+      $ref: './schemas/Money.yaml'
+    NameDetails:
+      $ref: './schemas/NameDetails.yaml'
+    Offence:
+      $ref: './schemas/Offence.yaml'
+    OffenceDateCode:
+      $ref: './schemas/OffenceDateCode.yaml'
+    OffenceDetails:
+      $ref: './schemas/OffenceDetails.yaml'
+    Organisation:
+      $ref: './schemas/Organisation.yaml'
+    OtherCases:
+      $ref: './schemas/OtherCases.yaml'
+    ParentGuardian:
+      $ref: './schemas/ParentGuardian.yaml'
+    ParentGuardianIndividual:
+      $ref: './schemas/ParentGuardianIndividual.yaml'
+    ParentGuardianNameDetails:
+      $ref: './schemas/ParentGuardianNameDetails.yaml'
+    ParentGuardianOrganisation:
+      $ref: './schemas/ParentGuardianOrganisation.yaml'
+    PncId:
+      $ref: './schemas/PncId.yaml'
+    CaseDetails:
+      $ref: './schemas/CaseDetails.yaml'
+    Summons:
+      $ref: './schemas/Summons.yaml'
+    UkGovPostCode:
+      $ref: './schemas/UkGovPostCode.yaml'
+    VehicleMake:
+      $ref: './schemas/VehicleMake.yaml'
+    VehicleRegistrationMark:
+      $ref: './schemas/VehicleRegistrationMark.yaml'
+
+security:
+  - BearerAuth: []
+
+paths:
+  /cases:
+    $ref: './paths/cases.yaml'
+  /submissions/{submissionId}:
+    $ref: './paths/submissions-submissionId.yaml'

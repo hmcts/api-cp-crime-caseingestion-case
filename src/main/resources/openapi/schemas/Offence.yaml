@@ -1,0 +1,18 @@
+type: object
+x-class-extra-annotation: "@lombok.AllArgsConstructor"
+properties:
+  offenceDetails:
+    $ref: ./OffenceDetails.yaml
+  arrestDate:
+    $ref: ./Date.yaml
+  statementOfFacts:
+    type: string
+    description: Statement of facts
+    maxLength: 4000
+  statementOfFactsWelsh:
+    type: string
+    description: Statement of facts in Welsh
+    maxLength: 4000
+required:
+- offenceDetails
+additionalProperties: false

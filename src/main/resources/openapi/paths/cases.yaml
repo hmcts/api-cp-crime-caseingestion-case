@@ -1,0 +1,39 @@
+post:
+  summary: Submit a case
+  description: >-
+    Submit a new case (other or summons) to the staging civil cases
+    service. Returns 202 with a submission ID and status URL that can
+    be polled for completion.
+  tags:
+    - Cases
+  requestBody:
+    required: true
+    content:
+      application/vnd.stagingcivil.other-case+json:
+        schema:
+          $ref: '../schemas/OtherCases.yaml'
+      application/vnd.stagingcivil.summons+json:
+        schema:
+          $ref: '../schemas/Summons.yaml'
+  responses:
+    '202':
+      description: Case submission accepted for processing
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              statusURL:
+                type: string
+              submissionId:
+                type: string
+                format: uuid
+            additionalProperties: false
+            required:
+              - statusURL
+              - submissionId
+          example:
+            statusURL: https://www.dummy.gov.uk/foo/bar/8191c165-e9e4-4fd7-ac6d-5bfd04690f77
+            submissionId: 8191c165-e9e4-4fd7-ac6d-5bfd04690f77
+    '500':
+      description: Internal Server Error

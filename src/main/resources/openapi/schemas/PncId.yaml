@@ -1,0 +1,3 @@
+type: string
+description: CJS standard format for Police National Computer Identifier. E.g. 2020/1234567L
+pattern: ^(?!0{4}|0{3}|0{2}}|0{1})([0-9][0-9]{3})([/])([0-9]{7})([a-zA-Z]|[0-9])$

@@ -1,0 +1,86 @@
+name: Publish API docs
+
+# Publishes this API's Swagger UI to https://hmcts.github.io/<repo>/ on release.
+# This repo's OpenAPI spec is modular ($refs into paths/ and schemas/), so the spec is
+# bundled into a single self-contained file before deploying — the shared amp-catalog
+# publish-swagger-ui workflow only copies one file and cannot resolve those $refs.
+# See https://github.com/hmcts/amp-catalog.
+on:
+  release:
+    types: [ published ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  FILE_PATH_OPENAPI: "src/main/resources/openapi"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Checkout caller repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || github.ref }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Bundle modular OpenAPI spec and assemble site
+        run: |
+          mkdir -p _site
+          npm install -g @redocly/cli@latest
+          redocly bundle "${FILE_PATH_OPENAPI}/openapi.yml" -o _site/openapi-spec.yml
+          cat > _site/index.html <<'HTML'
+          <!DOCTYPE html>
+          <html lang="en">
+            <head>
+              <meta charset="UTF-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <title>API Documentation</title>
+              <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.18.2/swagger-ui.css" />
+            </head>
+            <body>
+              <div id="swagger-ui"></div>
+              <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.18.2/swagger-ui-bundle.js"></script>
+              <script>
+                window.onload = () => {
+                  window.ui = SwaggerUIBundle({
+                    url: "openapi-spec.yml",
+                    dom_id: "#swagger-ui",
+                    deepLinking: true,
+                    tryItOutEnabled: false,
+                    supportedSubmitMethods: [],
+                  });
+                };
+              </script>
+            </body>
+          </html>
+          HTML
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
