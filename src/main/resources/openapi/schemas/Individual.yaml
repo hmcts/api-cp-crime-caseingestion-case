@@ -55,16 +55,8 @@ properties:
       ]$
   parentGuardian:
     $ref: ./ParentGuardian.yaml
-  aliases:
-    type: array
-    minItems: 1
-    items:
-      $ref: ./NameDetails.yaml
   custodyStatus:
     $ref: ./CustodyStatus.yaml
-  bailConditions:
-    type: string
-    maxLength: 2500
 required:
 - nameDetails
 - gender

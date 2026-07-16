@@ -8,12 +8,6 @@ properties:
   companyTelephoneNumber:
     type: string
     pattern: ^[0-9+\ \-]{10,}$
-  aliasOrganisationNames:
-    type: array
-    description: Also known as company name.
-    minItems: 1
-    items:
-      type: string
 required:
 - organisationName
 additionalProperties: false
