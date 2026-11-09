@@ -5,7 +5,7 @@ servers:
 info:
   title: API Common Platform Case Interface
   description: API providing information on Common Platform Case Interface (CPCI)
-  version: 0.0.0
+  version: '1.6'
   contact:
     email: no-reply@hmcts.com
   license:
@@ -14,10 +14,12 @@ info:
 
 components:
   securitySchemes:
-    BearerAuth:
-      description: Valid Bearer Token
-      type: http
-      scheme: bearer
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://login.microsoftonline.com/TENANT-ID/oauth2/v2.0/token'
+          scopes: {}
   schemas:
     Address:
       $ref: './schemas/Address.yaml'
@@ -33,6 +35,8 @@ components:
       $ref: './schemas/Defendant.yaml'
     DefendantDetails:
       $ref: './schemas/DefendantDetails.yaml'
+    DefendantProblem:
+      $ref: './schemas/DefendantProblem.yaml'
     Email:
       $ref: './schemas/Email.yaml'
     Gender:
@@ -69,8 +73,14 @@ components:
       $ref: './schemas/ParentGuardianOrganisation.yaml'
     PncId:
       $ref: './schemas/PncId.yaml'
+    Problem:
+      $ref: './schemas/Problem.yaml'
+    ProblemValue:
+      $ref: './schemas/ProblemValue.yaml'
     CaseDetails:
       $ref: './schemas/CaseDetails.yaml'
+    CaseProblem:
+      $ref: './schemas/CaseProblem.yaml'
     Summons:
       $ref: './schemas/Summons.yaml'
     UkGovPostCode:
@@ -81,7 +91,7 @@ components:
       $ref: './schemas/VehicleRegistrationMark.yaml'
 
 security:
-  - BearerAuth: []
+  - OAuth2: []
 
 paths:
   /cases:

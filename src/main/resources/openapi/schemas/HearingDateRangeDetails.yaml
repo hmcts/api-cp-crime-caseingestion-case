@@ -17,3 +17,7 @@ required:
 - startDateRangeOfHearing
 - endDateRangeOfHearing
 - courtHearingLocation
+description: Court hearing date range, used by other cases (e.g. enforcement) instead
+  of hearingDetails. startDateRangeOfHearing must not be before today and endDateRangeOfHearing
+  must not be before startDateRangeOfHearing; otherwise the submission is rejected
+  with 400 Bad Request.
