@@ -1,0 +1,67 @@
+type: object
+x-class-extra-annotation: "@lombok.AllArgsConstructor"
+description: >-
+  Processing status of a civil prosecution submission (stagingcivil.submission-details).
+  type and receivedAt are normally present but may be missing for legacy submissions.
+  completedAt is present only once the submission reaches a final status.
+properties:
+  id:
+    type: string
+    format: uuid
+  status:
+    type: string
+    enum:
+      - PENDING
+      - FAILED
+      - REJECTED
+      - SUCCESS
+      - SUCCESS_WITH_WARNINGS
+  type:
+    type: string
+    description: Submission type, for example PROSECUTION
+  receivedAt:
+    type: string
+    format: date-time
+  completedAt:
+    type: string
+    format: date-time
+  materialWarnings:
+    type: array
+    items:
+      $ref: ./Problem.yaml
+  materialErrors:
+    type: array
+    items:
+      $ref: ./Problem.yaml
+  caseWarnings:
+    type: array
+    items:
+      $ref: ./CaseProblem.yaml
+  caseErrors:
+    type: array
+    items:
+      $ref: ./CaseProblem.yaml
+  defendantWarnings:
+    type: array
+    items:
+      $ref: ./DefendantProblem.yaml
+  defendantErrors:
+    type: array
+    items:
+      $ref: ./DefendantProblem.yaml
+  fileName:
+    type: string
+    description: Original file name, when the submission came from a complaints CSV upload
+  username:
+    type: string
+    description: Display name of the submitter, when the submission came from a complaints CSV upload
+  prosecutingAuthority:
+    type: string
+    description: Prosecuting authority short name, when the submission came from a complaints CSV upload
+  summonsApplicationId:
+    type: string
+    format: uuid
+    description: Id of the summons application, when one was created for the submission
+required:
+  - id
+  - status

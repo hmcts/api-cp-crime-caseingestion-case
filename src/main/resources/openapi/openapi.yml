@@ -71,6 +71,16 @@ components:
       $ref: './schemas/PncId.yaml'
     CaseDetails:
       $ref: './schemas/CaseDetails.yaml'
+    ProblemValue:
+      $ref: './schemas/ProblemValue.yaml'
+    Problem:
+      $ref: './schemas/Problem.yaml'
+    CaseProblem:
+      $ref: './schemas/CaseProblem.yaml'
+    DefendantProblem:
+      $ref: './schemas/DefendantProblem.yaml'
+    SubmissionDetails:
+      $ref: './schemas/SubmissionDetails.yaml'
     Summons:
       $ref: './schemas/Summons.yaml'
     UkGovPostCode:

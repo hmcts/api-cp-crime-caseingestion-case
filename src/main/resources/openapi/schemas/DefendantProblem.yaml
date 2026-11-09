@@ -1,0 +1,11 @@
+type: object
+x-class-extra-annotation: "@lombok.AllArgsConstructor"
+properties:
+  prosecutorDefendantReference:
+    type: string
+  problems:
+    type: array
+    items:
+      $ref: ./Problem.yaml
+required:
+  - problems

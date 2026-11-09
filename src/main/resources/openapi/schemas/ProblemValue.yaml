@@ -1,0 +1,13 @@
+type: object
+x-class-extra-annotation: "@lombok.AllArgsConstructor"
+properties:
+  id:
+    type: string
+  key:
+    type: string
+    minLength: 1
+  value:
+    type: string
+required:
+  - key
+  - value
