@@ -1,4 +1,0 @@
-type: string
-pattern: ^[\da-zA-Z]$|^[\da-zA-Z](?=.{1,10}$)[\da-zA-Z\s]*[\da-zA-Z]$
-minLength: 1
-maxLength: 11

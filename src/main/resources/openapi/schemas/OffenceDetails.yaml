@@ -3,22 +3,20 @@ x-class-extra-annotation: "@lombok.AllArgsConstructor"
 properties:
   cjsOffenceCode:
     type: string
-    description: Identifies the CJS code applicable to criminal offences as per the
-      CJS Standard section 3.11
+    description: Identifies the CJS code applicable to criminal offences as per the CJS Standard section 3.11
     maxLength: 8
+    minLength: 1
   offenceSequenceNo:
     type: integer
     description: Sequence number of the offence
     minimum: 1
   offenceCommittedDate:
     $ref: ./Date.yaml
-  offenceDateCode:
-    $ref: ./OffenceDateCode.yaml
   laidDate:
     $ref: ./Date.yaml
   offenceCommittedEndDate:
     allOf:
-    - $ref: ./Date.yaml
+      - $ref: ./Date.yaml
     description: End date for period in which offence committed
   offenceLocation:
     type: string
@@ -28,33 +26,18 @@ properties:
     type: string
     description: Details of Information or Charge to be laid before the court
     maxLength: 2500
+    minLength: 1
   offenceWordingWelsh:
     type: string
     description: Details of Information or Charge to be laid before the court in Welsh
     maxLength: 2500
   prosecutorCompensation:
     allOf:
-    - $ref: ./Money.yaml
+      - $ref: ./Money.yaml
     description: Compensation claimed by the prosecutor
-  backDuty:
-    allOf:
-    - $ref: ./Money.yaml
-    description: Back duty
-  backDutyDateFrom:
-    allOf:
-    - $ref: ./Date.yaml
-    description: Start date of the period of unpaid back duty
-  backDutyDateTo:
-    allOf:
-    - $ref: ./Date.yaml
-    description: End date of the period of unpaid back duty
-  vehicleMake:
-    $ref: ./VehicleMake.yaml
-  vehicleRegistrationMark:
-    $ref: ./VehicleRegistrationMark.yaml
 required:
-- cjsOffenceCode
-- offenceSequenceNo
-- offenceWording
-- laidDate
+  - cjsOffenceCode
+  - offenceSequenceNo
+  - offenceWording
+  - laidDate
 additionalProperties: false

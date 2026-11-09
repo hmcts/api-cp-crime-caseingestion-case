@@ -2,11 +2,11 @@ type: object
 properties:
   startDateRangeOfHearing:
     allOf:
-    - $ref: ./Date.yaml
+      - $ref: ./Date.yaml
     description: Start date of the hearing date range (YYYY-MM-DD)
   endDateRangeOfHearing:
     allOf:
-    - $ref: ./Date.yaml
+      - $ref: ./Date.yaml
     description: End date of the hearing date range (YYYY-MM-DD)
   courtHearingLocation:
     type: string
@@ -14,6 +14,7 @@ properties:
     minLength: 1
     maxLength: 7
 required:
-- startDateRangeOfHearing
-- endDateRangeOfHearing
-- courtHearingLocation
+  - startDateRangeOfHearing
+  - endDateRangeOfHearing
+  - courtHearingLocation
+description: "Court hearing date range, used by other cases (e.g. enforcement) instead of hearingDetails. startDateRangeOfHearing must not be before today and endDateRangeOfHearing must not be before startDateRangeOfHearing; otherwise the submission is rejected with 400 Bad Request."

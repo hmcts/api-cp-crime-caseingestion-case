@@ -1,0 +1,16 @@
+type: object
+x-class-extra-annotation: "@lombok.AllArgsConstructor"
+properties:
+  id:
+    type: string
+    description: Optional Common Platform identifier of the element that failed validation
+  key:
+    type: string
+    minLength: 1
+    description: The field/attribute that failed validation
+  value:
+    type: string
+    description: The value of the field that failed validation
+required:
+  - key
+  - value

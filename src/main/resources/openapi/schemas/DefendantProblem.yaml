@@ -1,0 +1,12 @@
+type: object
+properties:
+  prosecutorDefendantReference:
+    type: string
+    description: Defendant reference, provided when the problem relates to a specific defendant
+  problems:
+    type: array
+    items:
+      $ref: ./Problem.yaml
+required:
+  - problems
+additionalProperties: false

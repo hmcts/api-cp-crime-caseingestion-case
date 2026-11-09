@@ -4,8 +4,7 @@ x-class-extra-annotation: "@lombok.AllArgsConstructor"
 properties:
   defendants:
     type: array
-    description: Individual or Single Cases may contain more than
-      one defendants. Bulk Cases contain only one defendant
+    description: Individual or Single Cases may contain more than one defendants. Bulk Cases contain only one defendant
     minItems: 1
     items:
       $ref: ./Defendant.yaml
@@ -15,22 +14,29 @@ properties:
     maxLength: 92
   caseMarker:
     type: string
-    description: To be populated if a CJS agreed Case Marker applies. Multiple values
-      to be separated by a space
+    description: To be populated if a CJS agreed Case Marker applies. Multiple values to be separated by a space
     maxLength: 10
   urn:
     type: string
     description: Case URN
     maxLength: 36
+    minLength: 1
+    pattern: "^[A-Za-z0-9-]+$"
+  relatedReferenceNumber:
+    type: string
+    description: Civil Authority reference for a case or account to be linked
+    minLength: 1
+    maxLength: 36
+    pattern: "^[A-Za-z0-9-]+$"
   paymentReference:
     type: string
     description: Case payment reference
     maxLength: 36
   summonsCode:
     type: string
-    description: Summons code
+    description: Summons code. Mandatory for summons cases, where the only accepted value is A. Optional for other cases.
     maxLength: 1
 required:
-- defendants
-- urn
+  - defendants
+  - urn
 additionalProperties: false

@@ -5,7 +5,7 @@ properties:
   prosecutorDefendantId:
     type: string
     description: DefendantId provided by prosecutor.
-    pattern: ^[a-zA-Z0-9-]*$
+    pattern: "^[a-zA-Z0-9-]+$"
     maxLength: 36
   asn:
     type: string
@@ -20,15 +20,16 @@ properties:
   hearingLanguage:
     $ref: ./Language.yaml
   address:
-    $ref: ./Address.yaml
-  numPreviousConvictions:
-    type: integer
-    description: Number of previous conviction cited by prosecutor.
+    description: Address of the defendant. postcode is mandatory for the defendant (but optional for a parent/guardian).
+    allOf:
+      - $ref: ./Address.yaml
+      - required:
+          - postcode
   prosecutorCosts:
     $ref: ./Money.yaml
 required:
-- prosecutorDefendantId
-- documentationLanguage
-- hearingLanguage
-- address
+  - prosecutorDefendantId
+  - documentationLanguage
+  - hearingLanguage
+  - address
 additionalProperties: false
