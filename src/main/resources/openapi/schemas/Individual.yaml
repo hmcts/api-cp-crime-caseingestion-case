@@ -24,11 +24,6 @@ properties:
     type: string
     description: The description of an occupation.
     maxLength: 54
-  occupationCode:
-    type: integer
-    minimum: 0
-    maximum: 99999
-    description: An occupation code
   observedEthnicity:
     type: number
   ethnicity:

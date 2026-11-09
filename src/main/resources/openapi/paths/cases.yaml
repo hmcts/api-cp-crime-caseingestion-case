@@ -1,20 +1,273 @@
 post:
   summary: Submit a case
-  description: >-
-    Submit a new case (other or summons) to the staging civil cases
-    service. Returns 202 with a submission ID and status URL that can
-    be polled for completion.
+  description: Submit a new case (other or summons) to the staging civil cases service.
+    Returns 202 with a submission ID and status URL that can be polled for completion.
   tags:
-    - Cases
+  - Cases
   requestBody:
     required: true
     content:
-      application/vnd.stagingcivil.other-case+json:
+      application/vnd.hmcts.cjs.cpci-summons.v1+json:
         schema:
-          $ref: '../schemas/OtherCases.yaml'
-      application/vnd.stagingcivil.summons+json:
+          $ref: ../schemas/Summons.yaml
+        example:
+          prosecutingAuthority: GAAAA01
+          hearingDetails:
+            courtHearingLocation: B01BH00
+            dateOfHearing: '2019-08-11'
+            timeOfHearing: 09:01:01
+          prosecutionCases:
+          - informant: Adam
+            caseMarker: Case mark
+            urn: case-urn-value1
+            summonsCode: A
+            defendants:
+            - defendantDetails:
+                prosecutorDefendantId: TFLDEF001
+                asn: SummonsNumber001
+                pncIdentifier: 2099/1234567L
+                croNumber: 123456/10L
+                documentationLanguage: E
+                hearingLanguage: E
+                address:
+                  address1: Address Line 1
+                  address2: Address Line 2
+                  address3: Address Line 3
+                  address4: Address Line 4
+                  address5: Address Line 5
+                  postcode: SE1H 1XX
+                prosecutorCosts: '20.99'
+              individual:
+                languageRequirement: no special language needs
+                specificRequirements: no special needs
+                nameDetails:
+                  title: Mr
+                  forename: John
+                  forename2: Adam
+                  forename3: Theodore
+                  surname: SMITH
+                contactDetails:
+                  workTelephoneNumber: '1231231230'
+                  homeTelephoneNumber: '1231231230'
+                  mobileTelephoneNumber: '1231231230'
+                  primaryEmail: aer@af.com
+                  secondaryEmail: aer@af.com
+                parentGuardian:
+                  individual:
+                    nameDetails:
+                      title: Mr
+                      forename: parentGuardianJack
+                      forename2: parentGuardianAaron
+                      forename3: Sr
+                      surname: parentGuardianReaper
+                    contactDetails:
+                      workTelephoneNumber: '9991231230'
+                      homeTelephoneNumber: '9991231230'
+                      mobileTelephoneNumber: '9991231230'
+                      primaryEmail: 999aer@test.com
+                      secondaryEmail: 999aer@test.com
+                    dateOfBirth: '1979-05-23'
+                    gender: 1
+                    observedEthnicity: 4
+                    selfDefinedEthnicity: W1
+                  address:
+                    address1: ParentGuardian Address Line 1
+                    address2: ParentGuardian Address Line 2
+                    address3: ParentGuardian Address Line 3
+                    address4: ParentGuardian Address Line 4
+                    address5: ParentGuardian Address Line 5
+                    postcode: PG0 1XX
+                nationality: GBR
+                additionalNationality: POL
+                dateOfBirth: '1970-02-03'
+                gender: 1
+                occupation: TA
+                ethnicity: W1
+                driverNumber: KER99861065SE9RM
+                nationalInsuranceNumber: SN123456C
+              offences:
+              - offenceDetails:
+                  cjsOffenceCode: CA03014
+                  offenceSequenceNo: 1
+                  offenceCommittedDate: '2019-06-11'
+                  laidDate: '2019-06-11'
+                  offenceCommittedEndDate: '2020-06-11'
+                  offenceLocation: Croydon
+                  offenceWording: Test Prosecution charge wording
+                  offenceWordingWelsh: Test Prosecution charge wording in Welsh
+                  prosecutorCompensation: '99.99'
+                statementOfFacts: 1Test Prosecution statements of facts
+                statementOfFactsWelsh: 1Welsh -Test Prosecution statements of facts
+      application/vnd.hmcts.cjs.cpci-other-cases.v1+json:
         schema:
-          $ref: '../schemas/Summons.yaml'
+          $ref: ../schemas/OtherCases.yaml
+        example:
+          prosecutingAuthority: GAAAA01
+          hearingDetails:
+            courtHearingLocation: B01BH00
+            dateOfHearing: '2019-08-11'
+            timeOfHearing: 09:01:01
+          prosecutionCases:
+          - informant: Adam
+            caseMarker: Case mark
+            urn: case-urn-value-1
+            defendants:
+            - defendantDetails:
+                prosecutorDefendantId: TFLDEF001
+                asn: SummonsNumber001
+                pncIdentifier: 2099/1234567L
+                croNumber: 123456/10L
+                documentationLanguage: E
+                hearingLanguage: E
+                address:
+                  address1: Address Line 1
+                  address2: Address Line 2
+                  address3: Address Line 3
+                  address4: Address Line 4
+                  address5: Address Line 5
+                  postcode: SE1H 1XX
+                prosecutorCosts: '20.99'
+              individual:
+                languageRequirement: no special language needs
+                specificRequirements: no special needs
+                nameDetails:
+                  title: Mr
+                  forename: John
+                  forename2: Adam
+                  forename3: Theodore
+                  surname: SMITH
+                contactDetails:
+                  workTelephoneNumber: '1231231230'
+                  homeTelephoneNumber: '1231231230'
+                  mobileTelephoneNumber: '1231231230'
+                  primaryEmail: aer@af.com
+                  secondaryEmail: aer@af.com
+                parentGuardian:
+                  individual:
+                    nameDetails:
+                      title: Mr
+                      forename: parentGuardianJack
+                      forename2: parentGuardianAaron
+                      forename3: Sr
+                      surname: parentGuardianReaper
+                    contactDetails:
+                      workTelephoneNumber: '9991231230'
+                      homeTelephoneNumber: '9991231230'
+                      mobileTelephoneNumber: '9991231230'
+                      primaryEmail: 999aer@test.com
+                      secondaryEmail: 999aer@test.com
+                    dateOfBirth: '1979-05-23'
+                    gender: 1
+                    observedEthnicity: 4
+                    selfDefinedEthnicity: W1
+                  address:
+                    address1: ParentGuardian Address Line 1
+                    address2: ParentGuardian Address Line 2
+                    address3: ParentGuardian Address Line 3
+                    address4: ParentGuardian Address Line 4
+                    address5: ParentGuardian Address Line 5
+                    postcode: PG0 1XX
+                nationality: GBR
+                additionalNationality: POL
+                dateOfBirth: '1970-02-03'
+                gender: 1
+                occupation: TA
+                ethnicity: W1
+                driverNumber: KER99861065SE9RM
+                nationalInsuranceNumber: SN123456C
+              offences:
+              - offenceDetails:
+                  cjsOffenceCode: CA03014
+                  offenceSequenceNo: 1
+                  offenceCommittedDate: '2019-06-11'
+                  laidDate: '2019-06-11'
+                  offenceCommittedEndDate: '2020-06-11'
+                  offenceLocation: Croydon
+                  offenceWording: Test Prosecution charge wording
+                  offenceWordingWelsh: Test Prosecution charge wording in Welsh
+                  prosecutorCompensation: '99.99'
+                statementOfFacts: 1Test Prosecution statements of facts
+                statementOfFactsWelsh: 1Welsh -Test Prosecution statements of facts
+          - informant: Adam
+            caseMarker: Case mark
+            urn: case-urn-value-2
+            defendants:
+            - defendantDetails:
+                prosecutorDefendantId: TFLDEF001
+                asn: SummonsNumber001
+                pncIdentifier: 2099/1234567L
+                croNumber: 123456/10L
+                documentationLanguage: E
+                hearingLanguage: E
+                address:
+                  address1: Address Line 1
+                  address2: Address Line 2
+                  address3: Address Line 3
+                  address4: Address Line 4
+                  address5: Address Line 5
+                  postcode: SE1H 1XX
+                prosecutorCosts: '20.99'
+              individual:
+                languageRequirement: no special language needs
+                specificRequirements: no special needs
+                nameDetails:
+                  title: Mr
+                  forename: John
+                  forename2: Adam
+                  forename3: Theodore
+                  surname: SMITH
+                contactDetails:
+                  workTelephoneNumber: '1231231230'
+                  homeTelephoneNumber: '1231231230'
+                  mobileTelephoneNumber: '1231231230'
+                  primaryEmail: aer@af.com
+                  secondaryEmail: aer@af.com
+                parentGuardian:
+                  individual:
+                    nameDetails:
+                      title: Mr
+                      forename: parentGuardianJack
+                      forename2: parentGuardianAaron
+                      forename3: Sr
+                      surname: parentGuardianReaper
+                    contactDetails:
+                      workTelephoneNumber: '9991231230'
+                      homeTelephoneNumber: '9991231230'
+                      mobileTelephoneNumber: '9991231230'
+                      primaryEmail: 999aer@test.com
+                      secondaryEmail: 999aer@test.com
+                    dateOfBirth: '1979-05-23'
+                    gender: 1
+                    observedEthnicity: 4
+                    selfDefinedEthnicity: W1
+                  address:
+                    address1: ParentGuardian Address Line 1
+                    address2: ParentGuardian Address Line 2
+                    address3: ParentGuardian Address Line 3
+                    address4: ParentGuardian Address Line 4
+                    address5: ParentGuardian Address Line 5
+                    postcode: PG0 1XX
+                nationality: GBR
+                additionalNationality: POL
+                dateOfBirth: '1970-02-03'
+                gender: 1
+                occupation: TA
+                ethnicity: W1
+                driverNumber: KER99861065SE9RM
+                nationalInsuranceNumber: SN123456C
+              offences:
+              - offenceDetails:
+                  cjsOffenceCode: CA03014
+                  offenceSequenceNo: 1
+                  offenceCommittedDate: '2019-06-11'
+                  laidDate: '2019-06-11'
+                  offenceCommittedEndDate: '2020-06-11'
+                  offenceLocation: Croydon
+                  offenceWording: Test Prosecution charge wording
+                  offenceWordingWelsh: Test Prosecution charge wording in Welsh
+                  prosecutorCompensation: '99.99'
+                statementOfFacts: 1Test Prosecution statements of facts
+                statementOfFactsWelsh: 1Welsh -Test Prosecution statements of facts
   responses:
     '202':
       description: Case submission accepted for processing
@@ -30,10 +283,71 @@ post:
                 format: uuid
             additionalProperties: false
             required:
-              - statusURL
-              - submissionId
+            - statusURL
+            - submissionId
           example:
             statusURL: https://www.dummy.gov.uk/foo/bar/8191c165-e9e4-4fd7-ac6d-5bfd04690f77
             submissionId: 8191c165-e9e4-4fd7-ac6d-5bfd04690f77
+    '400':
+      description: Bad Request. The request was not understood or failed validation.
+        Includes JSON schema violations and, for other cases using hearingDateRangeDetails,
+        a startDateRangeOfHearing before today or an endDateRangeOfHearing before
+        startDateRangeOfHearing.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Description of the validation failure
+              validationErrors:
+                type: object
+                description: Details of the JSON schema violations
+          example:
+            error: 'JSON schema validation has failed on {"metadata":{}} due to {"message":"#/prosecutionCases/0/defendants/0:
+              #: only 1 subschema matches out of 2","violatedSchema":"http://cpp.moj.gov.uk/staging/prosecutors/json/schemas/defendant.json
+              - Defendant Details of the case","violation":"#/prosecutionCases/0/defendants/0","causingExceptions":[{"message":"#/prosecutionCases/0/defendants/0:
+              2 schema violations found","violatedSchema":"","violation":"#/prosecutionCases/0/defendants/0","causingExceptions":[{"message":"#/prosecutionCases/0/defendants/0/individual:
+              extraneous key [bailConditions] is not permitted","violatedSchema":"http://cpp.moj.gov.uk/staging/prosecutors/json/schemas/individual.json
+              - Individual details","violation":"#/prosecutionCases/0/defendants/0/individual","causingExceptions":[]},{"message":"#/prosecutionCases/0/defendants/0/defendantDetails:
+              extraneous key [numPreviousConvictions] is not permitted","violatedSchema":"http://cpp.moj.gov.uk/staging/prosecutors/json/schemas/defendant-details.json
+              - Defendant Details of the case","violation":"#/prosecutionCases/0/defendants/0/defendantDetails","causingExceptions":[]}]}]} '
+            validationErrors:
+              message: '#/prosecutionCases/0/defendants/0: #: only 1 subschema matches
+                out of 2'
+              violatedSchema: http://cpp.moj.gov.uk/staging/prosecutors/json/schemas/defendant.json
+                - Defendant Details of the case
+              violation: '#/prosecutionCases/0/defendants/0'
+              causingExceptions:
+              - message: '#/prosecutionCases/0/defendants/0: 2 schema violations found'
+                violatedSchema: ''
+                violation: '#/prosecutionCases/0/defendants/0'
+                causingExceptions:
+                - message: '#/prosecutionCases/0/defendants/0/individual: extraneous
+                    key [bailConditions] is not permitted'
+                  violatedSchema: http://cpp.moj.gov.uk/staging/prosecutors/json/schemas/individual.json
+                    - Individual details
+                  violation: '#/prosecutionCases/0/defendants/0/individual'
+                  causingExceptions: []
+                - message: '#/prosecutionCases/0/defendants/0/defendantDetails: extraneous
+                    key [numPreviousConvictions] is not permitted'
+                  violatedSchema: http://cpp.moj.gov.uk/staging/prosecutors/json/schemas/defendant-details.json
+                    - Defendant Details of the case
+                  violation: '#/prosecutionCases/0/defendants/0/defendantDetails'
+                  causingExceptions: []
+    '401':
+      description: Unauthorised. The client request was not authorised.
+    '415':
+      description: Unsupported Media Type. The Content-Type is not supported.
+    '429':
+      description: Too Many Requests. The client is being rate limited.
     '500':
-      description: Internal Server Error
+      description: Internal Server Error.
+    '502':
+      description: Bad Gateway. A downstream gateway or proxy returned an invalid
+        response.
+    '503':
+      description: Service Unavailable. The CPCI API service is temporarily unavailable.
+    '504':
+      description: Gateway Timeout. The API service did not respond in time.

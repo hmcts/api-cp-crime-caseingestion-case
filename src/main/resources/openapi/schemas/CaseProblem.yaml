@@ -1,0 +1,12 @@
+type: object
+properties:
+  prosecutorCaseReference:
+    type: string
+    description: Case reference, provided when the problem relates to a specific case
+  problems:
+    type: array
+    items:
+      $ref: ./Problem.yaml
+required:
+- problems
+additionalProperties: false
