@@ -10,93 +10,13 @@ get:
       schema:
         type: string
         format: uuid
+        pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
       required: true
   responses:
-    '200':
+    "200":
       description: OK. Response contains the current status of the submission
       content:
-        application/vnd.hmcts.cjs.sjp.submission.v2+json:
-          schema:
-            type: object
-            x-class-extra-annotation: "@lombok.AllArgsConstructor"
-            properties:
-              id:
-                type: string
-                pattern: ^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$
-              status:
-                type: string
-                enum:
-                  - PENDING
-                  - FAILED
-                  - REJECTED
-                  - SUCCESS
-                  - SUCCESS_WITH_WARNINGS
-              warnings:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    code:
-                      type: string
-                      minLength: 1
-                    values:
-                      type: array
-                      items:
-                        type: object
-                        x-class-extra-annotation: "@lombok.AllArgsConstructor"
-                        properties:
-                          id:
-                            type: string
-                          key:
-                            type: string
-                            minLength: 1
-                          value:
-                            type: string
-                        required:
-                          - key
-                          - value
-                  required:
-                    - code
-                    - values
-                  additionalProperties: false
-              errors:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    code:
-                      type: string
-                      minLength: 1
-                    values:
-                      type: array
-                      items:
-                        type: object
-                        x-class-extra-annotation: "@lombok.AllArgsConstructor"
-                        properties:
-                          id:
-                            type: string
-                          key:
-                            type: string
-                            minLength: 1
-                          value:
-                            type: string
-                        required:
-                          - key
-                          - value
-                  required:
-                    - code
-                    - values
-                  additionalProperties: false
-          example:
-            id: cedb215e-9297-4799-9a4d-5c608eaa4131
-            status: REJECTED
-            warnings: []
-            errors:
-              - code: DEFENDANT_DOB_IN_FUTURE
-                values:
-                  - key: dateOfBirth
-                    value: '2000-01-01'
-        application/vnd.hmcts.cjs.submission.v2+json:
+        application/vnd.hmcts.cjs.cpci-submission-details+json:
           schema:
             type: object
             x-class-extra-annotation: "@lombok.AllArgsConstructor"
@@ -104,163 +24,139 @@ get:
               id:
                 type: string
                 format: uuid
+                pattern: "^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$"
+                description: Submission ID
+              type:
+                type: string
+                enum:
+                  - PROSECUTION
+                  - MATERIAL
+                description: The type of submission
               status:
                 type: string
                 enum:
                   - PENDING
                   - FAILED
+                  - PENDING_COURT_DECISION
                   - REJECTED
+                  - ACCEPTED
                   - SUCCESS
                   - SUCCESS_WITH_WARNINGS
-              caseWarnings:
+                description: Status of the submission. The initial status is PENDING. Terminal statuses are FAILED, REJECTED, SUCCESS and SUCCESS_WITH_WARNINGS. Non-summons submissions move from PENDING to FAILED, SUCCESS or SUCCESS_WITH_WARNINGS. Summons submissions move to PENDING_COURT_DECISION, then REJECTED if the court rejects the application, or ACCEPTED and then SUCCESS or SUCCESS_WITH_WARNINGS once the case is created.
+              receivedAt:
+                type: string
+                format: date-time
+                description: The time the submission was received
+              completedAt:
+                type: string
+                format: date-time
+                description: The time the submission completed processing. Present only once the submission is in a terminal status.
+              materialErrors:
                 type: array
+                description: Material business validation errors. Empty array when there are none.
                 items:
-                  type: object
-                  properties:
-                    code:
-                      type: string
-                      minLength: 1
-                    values:
-                      type: array
-                      items:
-                        type: object
-                        x-class-extra-annotation: "@lombok.AllArgsConstructor"
-                        properties:
-                          id:
-                            type: string
-                          key:
-                            type: string
-                            minLength: 1
-                          value:
-                            type: string
-                        required:
-                          - key
-                          - value
-                  required:
-                    - code
-                    - values
-                  additionalProperties: false
-              defendantWarnings:
+                  $ref: ../schemas/Problem.yaml
+              materialWarnings:
                 type: array
+                description: Material business validation warnings. Currently always empty.
                 items:
-                  type: object
-                  properties:
-                    prosecutorDefendantReference:
-                      type: string
-                    problems:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          code:
-                            type: string
-                            minLength: 1
-                          values:
-                            type: array
-                            items:
-                              type: object
-                              x-class-extra-annotation: "@lombok.AllArgsConstructor"
-                              properties:
-                                id:
-                                  type: string
-                                key:
-                                  type: string
-                                  minLength: 1
-                                value:
-                                  type: string
-                              required:
-                                - key
-                                - value
-                        required:
-                          - code
-                          - values
-                        additionalProperties: false
-                  required:
-                    - prosecutorDefendantReference
-                    - problems
-                  additionalProperties: false
+                  $ref: ../schemas/Problem.yaml
               caseErrors:
                 type: array
+                description: Case business validation errors. Empty array when there are none.
                 items:
-                  type: object
-                  properties:
-                    code:
-                      type: string
-                      minLength: 1
-                    values:
-                      type: array
-                      items:
-                        type: object
-                        x-class-extra-annotation: "@lombok.AllArgsConstructor"
-                        properties:
-                          id:
-                            type: string
-                          key:
-                            type: string
-                            minLength: 1
-                          value:
-                            type: string
-                        required:
-                          - key
-                          - value
-                  required:
-                    - code
-                    - values
-                  additionalProperties: false
+                  $ref: ../schemas/CaseProblem.yaml
+              caseWarnings:
+                type: array
+                description: Case business validation warnings. Currently always empty.
+                items:
+                  $ref: ../schemas/CaseProblem.yaml
               defendantErrors:
                 type: array
+                description: Defendant business validation errors. Empty array when there are none.
                 items:
-                  type: object
-                  properties:
-                    prosecutorDefendantReference:
-                      type: string
-                    problems:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          code:
-                            type: string
-                            minLength: 1
-                          values:
-                            type: array
-                            items:
-                              type: object
-                              x-class-extra-annotation: "@lombok.AllArgsConstructor"
-                              properties:
-                                id:
-                                  type: string
-                                key:
-                                  type: string
-                                  minLength: 1
-                                value:
-                                  type: string
-                              required:
-                                - key
-                                - value
-                        required:
-                          - code
-                          - values
-                        additionalProperties: false
-                  required:
-                    - prosecutorDefendantReference
-                    - problems
-                  additionalProperties: false
-          example:
-            id: d66b8daa-ae7b-4bf0-a46f-475272251d05
-            status: SUCCESS_WITH_WARNINGS
-            type: PROSECUTION
-            caseWarnings: []
-            caseErrors: []
-            defendantWarnings:
-              - problems:
-                  - code: OFFENCE_OUT_OF_TIME
-                    values:
-                      - key: daysOverdue
-                        value: '1'
-                prosecutorDefendantReference: DEFENDANTID1
-            defendantErrors: []
-            receivedAt: 2019-09-19T08:14:36.674Z[UTC]
-            completedAt: 2019-09-19T08:14:42.965Z[UTC]
-    '400':
-      description: Bad Request
+                  $ref: ../schemas/DefendantProblem.yaml
+              defendantWarnings:
+                type: array
+                description: Defendant business validation warnings. Currently always empty.
+                items:
+                  $ref: ../schemas/DefendantProblem.yaml
+            required:
+              - id
+              - status
+              - type
+              - receivedAt
+              - materialErrors
+              - materialWarnings
+              - caseErrors
+              - caseWarnings
+              - defendantErrors
+              - defendantWarnings
+          examples:
+            rejected:
+              summary: Rejected submission with case and defendant errors
+              value:
+                id: "4b542e4e-5ed6-4927-a7d2-b4a06320f4b5"
+                status: REJECTED
+                materialWarnings: []
+                materialErrors: []
+                type: PROSECUTION
+                receivedAt: "2026-08-14T17:40:20.703Z"
+                completedAt: "2026-08-14T17:40:22.240Z"
+                caseWarnings: []
+                caseErrors:
+                  - problems:
+                      - code: PROSECUTOR_OUCODE_NOT_RECOGNISED
+                        values:
+                          - key: prosecutingAuthority
+                            value: A010000
+                      - code: CASE_MARKER_IS_INVALID
+                        values:
+                          - id: "0"
+                            key: caseMarkers
+                            value: MC
+                    prosecutorCaseReference: "01IV4730649"
+                defendantWarnings: []
+                defendantErrors:
+                  - problems:
+                      - code: OFFENCE_CODE_NOT_SUPPORTED
+                        values:
+                          - id: "99eebb27-3360-4057-a682-135e612033b3"
+                            key: offence_offenceCode
+                            value: AX03547
+                          - id: "99eebb27-3360-4057-a682-135e612033b3"
+                            key: offence_offenceSequenceNo
+                            value: "1"
+                      - code: DATE_OF_HEARING_IN_THE_PAST
+                        values:
+                          - key: initialHearing_dateOfHearing
+                            value: "2026-05-05"
+                    prosecutorDefendantReference: cad5a01b-80cf-46b0-8ee9-1100c453fe13
+            success:
+              summary: Successful submission
+              value:
+                id: "6b18916e-2a20-4915-943b-2b66bb0f0c85"
+                status: SUCCESS
+                materialWarnings: []
+                materialErrors: []
+                caseErrors: []
+                defendantErrors: []
+                caseWarnings: []
+                defendantWarnings: []
+                type: PROSECUTION
+                receivedAt: "2026-08-25T14:50:26.232Z"
+                completedAt: "2026-08-25T14:50:29.120Z"
+    "400":
+      description: Bad Request. The submission id is not a valid UUID.
+    "401":
+      description: Unauthorised. The client request was not authorised.
+    "404":
+      description: Not Found. The resource was not found.
+    "500":
+      description: Internal Server Error.
+    "502":
+      description: Bad Gateway. A downstream gateway or proxy returned an invalid response.
+    "503":
+      description: Service Unavailable. The CPCI API service is temporarily unavailable.
+    "504":
+      description: Gateway Timeout. The API service did not respond in time.

@@ -8,13 +8,11 @@ properties:
     $ref: ./ContactDetails.yaml
   nationality:
     type: string
-    description: Country of origin as stated by the defendant, as per CJS Standards
-      section 3.103
+    description: Country of origin as stated by the defendant, as per CJS Standards section 3.103
     maxLength: 3
   additionalNationality:
     type: string
-    description: Additional country of origin as stated by the defendant, as per CJS
-      Standards section 3.103
+    description: Additional country of origin as stated by the defendant, as per CJS Standards section 3.103
     maxLength: 3
   dateOfBirth:
     $ref: ./Date.yaml
@@ -24,11 +22,6 @@ properties:
     type: string
     description: The description of an occupation.
     maxLength: 54
-  occupationCode:
-    type: integer
-    minimum: 0
-    maximum: 99999
-    description: An occupation code
   observedEthnicity:
     type: number
   ethnicity:
@@ -51,13 +44,12 @@ properties:
     description: National Insurance Number (CGS DSC 5.15)
     minLength: 9
     maxLength: 9
-    pattern: ^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z][0-9][0-9][0-9][0-9][0-9][0-9][A-D
-      ]$
+    pattern: "^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z][0-9][0-9][0-9][0-9][0-9][0-9][A-D ]$"
   parentGuardian:
     $ref: ./ParentGuardian.yaml
   custodyStatus:
     $ref: ./CustodyStatus.yaml
 required:
-- nameDetails
-- gender
+  - nameDetails
+  - gender
 additionalProperties: false
