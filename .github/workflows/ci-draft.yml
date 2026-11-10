@@ -106,7 +106,7 @@ jobs:
     name: Publish Artefact - Java ${{ matrix.java }}
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    needs: [Artefact-Version, Test]
+    needs: [Artefact-Version, Update-Spec-Version, Test]
     strategy:
       matrix:
         java: [21]

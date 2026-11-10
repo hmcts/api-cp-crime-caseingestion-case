@@ -21,6 +21,7 @@ properties:
     $ref: ./Language.yaml
   address:
     description: Address of the defendant. postcode is mandatory for the defendant (but optional for a parent/guardian).
+    x-class-extra-annotation: "@lombok.AllArgsConstructor"
     allOf:
       - $ref: ./Address.yaml
       - required:
