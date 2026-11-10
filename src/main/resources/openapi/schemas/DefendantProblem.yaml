@@ -1,4 +1,5 @@
 type: object
+x-class-extra-annotation: "@lombok.AllArgsConstructor"
 properties:
   prosecutorDefendantReference:
     type: string
