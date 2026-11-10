@@ -18,7 +18,7 @@ def azureADOArtifactRepository = 'https://pkgs.dev.azure.com/hmcts/Artifacts/_pa
 def azureADOArtifactActor = System.getenv("AZURE_DEVOPS_ARTIFACT_USERNAME")
 def azureADOArtifactToken = System.getenv("AZURE_DEVOPS_ARTIFACT_TOKEN")
 
-
+//
 //debugging
 //    if (githubActor != null) {
 //      println "🔐 Configuring GitHub Packages publishing to: https://maven.pkg.github.com/$githubRepo"
