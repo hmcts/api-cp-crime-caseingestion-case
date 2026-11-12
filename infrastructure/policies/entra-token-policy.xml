@@ -1,0 +1,76 @@
+<policies>
+    <inbound>
+        <base />
+        <!-- The caller supplies client_id, client_secret and optionally scope, as headers (the
+             portal renders those as boxes) or as form fields. The grant type is fixed. -->
+        <set-variable name="clientId" value="@{
+            var header = context.Request.Headers.GetValueOrDefault(&quot;X-Client-Id&quot;, &quot;&quot;).Trim();
+            if (header.Length != 0) { return header; }
+            var form = context.Request.Body?.AsFormUrlEncodedContent(true);
+            return form != null &amp;&amp; form.ContainsKey(&quot;client_id&quot;) ? (form[&quot;client_id&quot;].FirstOrDefault() ?? &quot;&quot;).Trim() : &quot;&quot;;
+        }" />
+        <set-variable name="clientSecret" value="@{
+            var header = context.Request.Headers.GetValueOrDefault(&quot;X-Client-Secret&quot;, &quot;&quot;).Trim();
+            if (header.Length != 0) { return header; }
+            var form = context.Request.Body?.AsFormUrlEncodedContent(true);
+            return form != null &amp;&amp; form.ContainsKey(&quot;client_secret&quot;) ? (form[&quot;client_secret&quot;].FirstOrDefault() ?? &quot;&quot;).Trim() : &quot;&quot;;
+        }" />
+        <set-variable name="scope" value="@{
+            var header = context.Request.Headers.GetValueOrDefault(&quot;X-Scope&quot;, &quot;&quot;).Trim();
+            if (header.Length != 0) { return header; }
+            var form = context.Request.Body?.AsFormUrlEncodedContent(true);
+            return form != null &amp;&amp; form.ContainsKey(&quot;scope&quot;) ? (form[&quot;scope&quot;].FirstOrDefault() ?? &quot;&quot;).Trim() : &quot;&quot;;
+        }" />
+        <choose>
+            <when condition="@{
+                var scope = context.Variables.GetValueOrDefault&lt;string&gt;(&quot;scope&quot;, &quot;&quot;);
+                var clientId = context.Variables.GetValueOrDefault&lt;string&gt;(&quot;clientId&quot;, &quot;&quot;);
+                var clientSecret = context.Variables.GetValueOrDefault&lt;string&gt;(&quot;clientSecret&quot;, &quot;&quot;);
+                return clientId.Length == 0 || clientId.StartsWith(&quot;&lt;&quot;)
+                    || clientSecret.Length == 0 || clientSecret.StartsWith(&quot;&lt;&quot;)
+                    || (scope.Length != 0 &amp;&amp; !scope.EndsWith(&quot;/.default&quot;));
+            }">
+                <return-response>
+                    <set-status code="400" reason="Bad Request" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>{"error":"invalid_request","error_description":"Send your client id and secret in the X-Client-Id and X-Client-Secret headers, or as client_id and client_secret form fields. The scope is optional and must end in /.default."}</set-body>
+                </return-response>
+            </when>
+        </choose>
+        <!-- The credentials go to Entra in the body this policy builds, never as headers. -->
+        <set-header name="X-Client-Id" exists-action="delete" />
+        <set-header name="X-Client-Secret" exists-action="delete" />
+        <set-header name="X-Scope" exists-action="delete" />
+        <set-header name="Ocp-Apim-Subscription-Key" exists-action="delete" />
+        <set-header name="Authorization" exists-action="delete" />
+        <!-- Entra refuses client-credentials requests that carry a browser Origin (AADSTS9002326). -->
+        <set-header name="Origin" exists-action="delete" />
+        <set-header name="Referer" exists-action="delete" />
+        <set-header name="Content-Type" exists-action="override">
+            <value>application/x-www-form-urlencoded</value>
+        </set-header>
+        <set-body>@{
+            var scope = context.Variables.GetValueOrDefault&lt;string&gt;(&quot;scope&quot;, &quot;&quot;);
+            if (scope.Length == 0) { scope = &quot;${default_scope}&quot;; }
+            return &quot;grant_type=client_credentials&quot;
+                + &quot;&amp;client_id=&quot; + Uri.EscapeDataString(context.Variables.GetValueOrDefault&lt;string&gt;(&quot;clientId&quot;))
+                + &quot;&amp;client_secret=&quot; + Uri.EscapeDataString(context.Variables.GetValueOrDefault&lt;string&gt;(&quot;clientSecret&quot;))
+                + &quot;&amp;scope=&quot; + Uri.EscapeDataString(scope);
+        }</set-body>
+        <rate-limit-by-key calls="10" renewal-period="60" counter-key="@(context.Variables.GetValueOrDefault&lt;string&gt;(&quot;clientId&quot;) + &quot;:entra-token&quot;)" />
+    </inbound>
+    <backend>
+        <forward-request />
+    </backend>
+    <outbound>
+        <base />
+        <set-header name="Cache-Control" exists-action="override">
+            <value>no-store</value>
+        </set-header>
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
