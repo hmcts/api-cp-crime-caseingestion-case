@@ -1,0 +1,98 @@
+name: Infrastructure
+
+# Registers the Case Ingestion Case API in the sandbox APIM (infrastructure/sbox.tfvars).
+# Pull requests get a plan posted as a comment; pushes to main apply.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "infrastructure/**"
+      - "src/main/resources/openapi/**"
+      - ".github/workflows/terraform-infra.yaml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "infrastructure/**"
+      - "src/main/resources/openapi/**"
+      - ".github/workflows/terraform-infra.yaml"
+  workflow_dispatch:
+    inputs:
+      overrideAction:
+        description: "Run plan or apply"
+        required: true
+        default: plan
+        type: choice
+        options:
+          - plan
+          - apply
+
+concurrency:
+  group: terraform-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+env:
+  FILE_PATH_OPENAPI: src/main/resources/openapi
+
+jobs:
+  precheck:
+    name: Terraform Precheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Terraform format check
+        uses: hmcts/cnp-githubactions-library/terraform-fmt@main
+        with:
+          working-directory: infrastructure
+          recursive: true
+
+  # Not the shared terraform-deploy-openId.yaml workflow: it runs Terraform straight after
+  # checkout, and the spec has to be bundled first. This job runs the same action itself.
+  terraform-sbox:
+    name: Terraform sbox
+    needs: [ precheck ]
+    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.overrideAction == 'plan' || github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # apis.tf reads the spec with yamldecode(file(...)), which cannot follow the $refs into
+      # paths/ and schemas/. Bundle it into one file at the path sbox.tfvars points to.
+      - name: Bundle modular OpenAPI spec into a single self-contained file
+        run: |
+          npm install -g @redocly/cli@latest
+          redocly bundle ${FILE_PATH_OPENAPI}/openapi.yml -o /tmp/bundled.yml
+          mv /tmp/bundled.yml ${FILE_PATH_OPENAPI}/openapi.yml
+
+      - name: Terraform Deploy
+        uses: hmcts/cnp-githubactions-library/terraform-deploy-openid@main
+        with:
+          environment: sbox
+          subscription: ${{ vars.AZURE_SUBSCRIPTION_SBOX }}
+          aks-subscription: ${{ vars.AZURE_SUBSCRIPTION_SBOX }}
+          storage-account: ${{ vars.TFSTATE_STORAGE_ACCOUNT_NONPROD }}
+          azure-client-id: ${{ vars.AZURE_CLIENT_ID_SBOX }}
+          azure-subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID_SBOX }}
+          state-store-resource-group: rg-sps-platform-sbox
+          state-store-account-name: spsapimapisboxstate
+          state-store-container-name: terraform-state
+          state-store-use-entra-id-auth: true
+          working-directory: infrastructure
+          plan-only: ${{ github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.event.inputs.overrideAction == 'plan') }}
+          product: cp-crime-caseingestion
+          post-plan-to-pr: true
