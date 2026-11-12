@@ -59,7 +59,7 @@ paths:
                 scope:
                   type: string
                   description: Must end in /.default. Defaults to the Case Ingestion Case API.
-            example: client_id=<your-client-id>&client_secret=<your-client-secret>&scope=30288840-e345-4543-99ee-f9253d789339/.default
+            example: client_id=<your-client-id>&client_secret=<your-client-secret>&scope=6474e0e1-d2b3-4383-a7d0-5253c8dc9ff4/.default
       responses:
         '200':
           description: The access token, issued by Entra.

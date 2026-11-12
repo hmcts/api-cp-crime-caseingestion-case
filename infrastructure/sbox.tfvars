@@ -11,7 +11,7 @@ apim_product = {
 }
 
 entra_tenant_id = "d44f885c-4fac-47bf-afde-d7d861ec4d7b"
-entra_client_id = "30288840-e345-4543-99ee-f9253d789339"
+entra_client_id = "6474e0e1-d2b3-4383-a7d0-5253c8dc9ff4"
 
 apis = {
   case = {
