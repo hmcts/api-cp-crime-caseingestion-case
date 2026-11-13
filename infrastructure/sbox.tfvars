@@ -18,12 +18,12 @@ apis = {
     # The source spec is modular ($ref to paths/ and schemas/). Terraform reads it with file(),
     # so terraform-infra.yaml bundles it into one file at this path before Terraform runs.
     openapi_spec_path = "../src/main/resources/openapi/openapi.yml"
-    display_name      = "Crime Case Ingestion Case API (cpci)"
-    path              = "amp/cpci"                    # TODO: confirm APIM path
-    service_host      = "devamp01-appgw.dev.nl.cjscp" # TODO: confirm backend host for service-cp-crime-caseingestion-case
-    service_path      = "/cpci"                       # TODO: confirm backend path
+    display_name      = "Crime Case Ingestion Case API (cic)"
+    path              = "amp/cic"
+    service_host      = "devamp01-appgw.dev.nl.cjscp"
+    service_path      = "/cic"
     revision          = "1"
-    required_roles    = ["app.read"] # TODO: POST /cases is a write; confirm whether a write role is needed
+    required_roles    = ["app.read"]
     # Pre-filled Authorization and Accept boxes in the portal's Try it (see apis.tf).
     try_it_auth_headers = true
   }
