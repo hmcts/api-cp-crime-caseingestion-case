@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Get an Entra access token (sandbox)
+  title: Get an Entra access token for Case Ingestion Case (sandbox)
   description: |
     Sandbox only. Swaps your client credentials for an Entra access token, so you can
     try the Case Ingestion Case API in this portal with your own app registration.
